@@ -1,0 +1,15 @@
+[
+    {
+        "CategoryName":"Meal/rice",
+        "name":"Meal Box",
+        "img":"http://",
+        "options":[
+            {
+                "single":"130",
+                "full":"220"
+            }
+        ],
+        "description":"homely rice meal "
+    }
+]
+
