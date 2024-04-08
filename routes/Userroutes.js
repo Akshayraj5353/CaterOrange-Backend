@@ -20,7 +20,7 @@ router.post("/Register",registerUser);
 
 router.post("/Login",loginUser);
 
-router.post("/foodData",foodData)
+router.get("/foodData",foodData)
 
 // router.get("/current", validateToken , currentUser);
 
