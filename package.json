@@ -2,13 +2,13 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "",
-  "main": "Server.js",
+  "main": "index.js",
   "engines": {
     "node": "20.x"
   },
   "scripts": {
-    "devstart": "node Server.js",
-    "start": "node Server.js",
+    "devstart": "node index.js",
+    "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
