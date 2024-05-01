@@ -1,53 +1,63 @@
-const express = require("express");
+const express = require('express');
 const bodyParser = require("body-parser");
-const jwt = require("jsonwebtoken");
-const bcrypt = require("bcrypt");
+const bcrypt = require('bcryptjs');
 const cors = require("cors");
-const mongoose = require("mongoose");
-const User = require("../models/UserModel");
+const User = require('../models/UserSchema');
+const jwt = require('jsonwebtoken');
+
+
 
 const app = express();
-
 app.use(bodyParser.json());
 app.use(cors());
 
+// app.use(express.json());
+
 const loginData = async (req, res) => {
-  const { email, password } = req.body;
-  console.log('Received credentials:', { email, password });
+  console.log("logindata")
+  console.log(req.body);
 
   try {
-    // Check if the user exists
+    const { email, password } = req.body;
+    console.log('Received credentials:', { email, password });
     const user = await User.findOne({ email });
 
-    if (!user || !bcrypt.compareSync(password, user.password)) {
-      return res.status(200).json({ message: "Invalid credentials" });
+    if (!user ) {
+      return res.status(401).json({ message: 'Invalid credentials' });
     }
 
-    // Create and sign a JWT token
-    const token = jwt.sign(
-      { id: user.id, email: user.email },
-      "your-secret-key",
-      {
-        expiresIn: "1h", // Token expiration time (adjust as needed)
-      }
-    );
+    // const currentTimeStamp = Math.floor(Date.now()/ 1000);
+    // user.lastLogin = currentTimeStamp;
+    // await user.save();
 
-//     const receivedToken = token;
+     user.lastLogin = Date.now();
+    await user.save();
 
-// // Set the token in localStorage
-// localStorage.setItem('token', receivedToken);
-
-const userWithoutPassword = {
-    id: user.id,
-  };
-
-  res.json({ token, user: userWithoutPassword });
-
-    // res.json({ token, user });
+    const token = jwt.sign({ userId: user._id }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1h' });
+    res.json({ token });
   } catch (error) {
-    console.error("Error during login:", error);
-    res.status(500).json({ message: "Internal Server Error" });
+    console.error('Error during login:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
   }
 };
 
-module.exports = { loginData };
+
+
+const verifyToken = (req, res, next) => {
+  const token = req.headers.authorization;
+
+  if (!token) {
+    return res.status(401).json({ message: 'Unauthorized' });
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+    req.userId = decoded.userId;
+    next();
+  } catch (error) {
+    console.error('Error verifying token:', error);
+    res.status(401).json({ message: 'Unauthorized' });
+  }
+};
+
+module.exports = { loginData, verifyToken };

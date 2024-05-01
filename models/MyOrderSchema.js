@@ -7,8 +7,8 @@ const formDataSchema = new mongoose.Schema({
     mealQuantity: Number,
     addOns: {
         gulabJamoon: Number,
-        moongDalHalwa: Number,
-        todaysSpecialSweet: Number
+        // moongDalHalwa: Number,
+        // todaysSpecialSweet: Number
     },
     itemName: String,
     itemPrice: Number,
