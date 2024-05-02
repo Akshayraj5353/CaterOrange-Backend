@@ -1,4 +1,5 @@
-const FormData = require('../models/MyOrderSchema');
+const FormData = require('../models/MenuSchema');
+const mongoose = require('mongoose')
 
 // const CreateOrderDetails = async (req, res) => {
 //     try {
@@ -43,8 +44,10 @@ const CreateOrderDetails = async (req, res) => {
 // Get all form data
 const getAllOrderDetails = async (req, res) => {
   try {
-    const formData = await FormData.find();
-    res.json(formData);
+    const { userId } = req.params;
+    console.log(userId);
+    const formData = await FormData.find({ userId: new mongoose.Types.ObjectId(userId) });
+    res.json({data: formData});
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

@@ -2,7 +2,8 @@ const express = require('express');
 const router = express.Router();
 const {loginData, verifyToken} = require('../controllers/LoginController');
 const {signup} = require('../controllers/SignupController')
-const {CreateOrderDetails, getAllOrderDetails, getOrderDetailsById, updateOrderDetails, deleteOrderDetails} = require('../controllers/MyOrderController');
+const {CreateOrderDetails, getAllOrderDetails, getOrderDetailsById, updateOrderDetails, deleteOrderDetails} = require('../controllers/MenuController');
+const {cartDetails} = require('../controllers/CartController');
 // const {verifyToken} = require('../controllers/authMiddleware');
 
 // app.use(verifyToken);
@@ -13,20 +14,14 @@ router.post("/signup", signup)
 
 router.post("/CreateOrderDetails", CreateOrderDetails);
 
-router.get('/getAllOrderDetails', getAllOrderDetails);
+router.get('/getAllOrderDetails/:userId', getAllOrderDetails);
 
-// router.post('/checkout', checkOut);
+router.get('/getOrderDetailsById',getOrderDetailsById);
 
-// router.post('/paymentverification', paymentVerification);
+router.put('/updateOrderDetails/:id', updateOrderDetails);
 
+router.delete('/deleteOrderDetails/:id', deleteOrderDetails);
 
-
-
-
-router.get('/getOrderDetailsById', getOrderDetailsById);
-
-router.put('/updateOrderDetails', updateOrderDetails);
-
-router.delete('/deleteOrderDetails', deleteOrderDetails);
+router.post("/createCartDetails/:id",  cartDetails)
 
 module.exports = router;
