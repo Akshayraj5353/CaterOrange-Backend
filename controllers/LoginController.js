@@ -19,17 +19,13 @@ const loginData = async (req, res) => {
 
   try {
     const { email, password } = req.body;
-    console.log('Received credentials:', { email, password });
-    const user = await User.findOne({ email });
+    const lowercaseEmail = email.toLowerCase();
+    console.log('Received credentials:', { email: lowercaseEmail, password });
+    const user = await User.findOne({email: lowercaseEmail });
 
-    if (!user ) {
+    if (!user || !(await bcrypt.compare(password, user.password)) ) {
       return res.status(401).json({ message: 'Invalid credentials' });
     }
-
-    // const currentTimeStamp = Math.floor(Date.now()/ 1000);
-    // user.lastLogin = currentTimeStamp;
-    // await user.save();
-
      user.lastLogin = Date.now();
     await user.save();
 

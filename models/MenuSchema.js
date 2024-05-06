@@ -16,4 +16,4 @@ const formDataSchema = new mongoose.Schema({
 });
 
 
-module.exports = mongoose.model('FormData', formDataSchema);
+module.exports = mongoose.model('cartDetails', formDataSchema);

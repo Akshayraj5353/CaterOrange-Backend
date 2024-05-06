@@ -6,20 +6,20 @@ const CartSchema = require('../models/CartSchema');
 const cartDetails = async (req, res) => {
   try {
     // Extract data from the request body
-    const { cartData, subtotal, GST, total, dessertTotals } = req.body;
+    const { userId, cartData, subtotal, GST, total, dessertTotals } = req.body;
 
     // Check if any dessert quantity is less than 1
     if (
-      dessertTotals.gulabJamoon.quantity < 1 ||
-      dessertTotals.moongDalHalwa.quantity < 1 ||
-      dessertTotals.todaysSpecialSweet.quantity < 1
+      dessertTotals.gulabJamoon.quantity < 1 
+    //   dessertTotals.moongDalHalwa.quantity < 1 ||
+    //   dessertTotals.todaysSpecialSweet.quantity < 1
     ) {
       return res.status(400).json({ error: 'Dessert quantity should be at least 1' });
     }
 
     // Create a new instance of Checkout model
     const cartDatas = new CartSchema({
-      cartData,
+      userId,
       subtotal,
       GST,
       total,

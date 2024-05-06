@@ -14,17 +14,7 @@ const cartDetailSchema = new mongoose.Schema({
       total: Number,
       description: String
     },
-    // moongDalHalwa: {
-    //   quantity: Number,
-    //   total: Number,
-    //   description: String
-    // },
-    // todaysSpecialSweet: {
-    //   quantity: Number,
-    //   total: Number,
-    //   description: String
-    // }
   }
 });
 
-module.exports = mongoose.model('CartDetail', cartDetailSchema);
+module.exports = mongoose.model('OrderDetails', cartDetailSchema);

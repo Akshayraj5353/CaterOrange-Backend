@@ -7,8 +7,8 @@
     "node": "20.x"
   },
   "scripts": {
-    "start:dev": "cross-env NODE_ENV=development nodemon index.js",
-    "start:prod": "cross-env NODE_ENV=production nodemon index.js"
+    "start": "cross-env NODE_ENV=development nodemon index.js",
+    "prod": "cross-env NODE_ENV=production nodemon index.js"
   },
   "keywords": [],
   "author": "",
@@ -22,7 +22,7 @@
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.4.0",
     "mongoose": "^8.2.1",
-    "razorpay": "^2.9.2",
+    "razorpay": "^2.9.3",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.0",
     "yamljs": "^0.3.0"
