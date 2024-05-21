@@ -1,4 +1,4 @@
-const FormData = require('../models/MenuSchema');
+const cartDetails = require('../models/MenuSchema');
 const mongoose = require('mongoose')
 
 // const CreateOrderDetails = async (req, res) => {
@@ -7,7 +7,7 @@ const mongoose = require('mongoose')
 //         // Save form data to MongoDB
 //         const cartData = await FormData.create(formData);
 
-        
+
 //         res.send({ message: 'Form data saved to MongoDB', cartData });
 //     } catch (error) {
 //         console.error('Error saving form data to MongoDB:', error);
@@ -18,25 +18,25 @@ const mongoose = require('mongoose')
 
 const CreateOrderDetails = async (req, res) => {
   try {
-      const formData = req.body;
-      const userId = formData.userId; // Assuming you have a userId in the formData
+    const formData = req.body;
+    const userId = formData.userId; // Assuming you have a userId in the formData
 
-      // Check if an order exists for the user
-      let existingOrder = await FormData.findOne({ userId });
+    // Check if an order exists for the user
+    let existingOrder = await cartDetails.findOne({ userId });
 
-      if (existingOrder) {
-          // Update existing order with new form data
-          Object.assign(existingOrder, formData);
-          await existingOrder.save();
-          res.send({ message: 'Form data updated in MongoDB', cartData: existingOrder });
-      } else {
-          // Save new form data to MongoDB
-          const cartData = await FormData.create(formData);
-          res.send({ message: 'Form data saved to MongoDB', cartData });
-      }
+    if (existingOrder) {
+      // Update existing order with new form data
+      Object.assign(existingOrder, formData);
+      await existingOrder.save();
+      res.send({ message: 'Form data updated in MongoDB', cartData: existingOrder });
+    } else {
+      // Save new form data to MongoDB
+      const cartData = await FormData.create(formData);
+      res.send({ message: 'Form data saved to MongoDB', cartData });
+    }
   } catch (error) {
-      console.error('Error saving form data to MongoDB:', error);
-      res.status(500).send({ error: 'An error occurred while saving form data' });
+    console.error('Error saving form data to MongoDB:', error);
+    res.status(500).send({ error: 'An error occurred while saving form data' });
   }
 }
 
@@ -47,7 +47,7 @@ const getAllOrderDetails = async (req, res) => {
     const { userId } = req.params;
     console.log(userId);
     const formData = await FormData.find({ userId: new mongoose.Types.ObjectId(userId) });
-    res.json({data: formData});
+    res.json({ data: formData });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -82,15 +82,17 @@ const updateOrderDetails = async (req, res) => {
 // Delete a form data by ID
 const deleteOrderDetails = async (req, res) => {
   try {
-    const formData = await FormData.findByIdAndDelete(req.params.id);
+    const { userId } = req.params;
+    // Find and delete document by userId field
+    const formData = await FormData.findOneAndDelete({ userId: new mongoose.Types.ObjectId(userId) });
     if (!formData) {
       return res.status(404).json({ message: 'Form data not found' });
     }
+
     res.json({ message: 'Form data deleted successfully' });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
-
 
 module.exports = { CreateOrderDetails, getAllOrderDetails, getOrderDetailsById, updateOrderDetails, deleteOrderDetails };
