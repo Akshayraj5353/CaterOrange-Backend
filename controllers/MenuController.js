@@ -1,4 +1,4 @@
-const cartDetails = require('../models/MenuSchema');
+const FormData = require('../models/MenuSchema');
 const mongoose = require('mongoose')
 
 // const CreateOrderDetails = async (req, res) => {
@@ -22,7 +22,7 @@ const CreateOrderDetails = async (req, res) => {
     const userId = formData.userId; // Assuming you have a userId in the formData
 
     // Check if an order exists for the user
-    let existingOrder = await cartDetails.findOne({ userId });
+    let existingOrder = await FormData.findOne({ userId });
 
     if (existingOrder) {
       // Update existing order with new form data

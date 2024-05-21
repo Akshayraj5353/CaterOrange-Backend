@@ -110,9 +110,38 @@ router.post('/phonepe/webhook', (req, res) => {
     const xVerifyHeader = callbackHeaders['X-VERIFY'];
     const decodedResponse = Buffer.from(base64response, 'base64').toString('utf8');
     console.log(decodedResponse);
-    // res.send(decodedResponse);
+    res.send(decodedResponse);
 })
 
+
+router.post("/status/:merchantTransactionId", (req, res) => {
+    const { merchantTransactionId } = req.params;
+    const merchantId = process.env.MERCHANT_ID;
+    if (merchantTransactionId) {
+        const xVerify = sha256(`/pg/v1/status/${merchantId}/${merchantTransactionId}`+ process.env.SALT_KEY)+"###"+process.env.SALT_INDEX
+        const axios = require('axios');
+        const options = {
+            method: 'get',
+            url: `https://api-preprod.phonepe.com/apis/pg-sandbox/pg/v1/status/${merchantId}/${merchantTransactionId}`,
+            headers: {
+                'Content-Type': 'application/json',
+                'X-MERCHANT-ID':merchantId,	
+                'X-VERIFY': xVerify,
+            },
+
+        };
+        axios
+            .request(options)
+            .then(function (response) {
+                console.log(response.data);
+                res.send(response.data)
+            })
+            .catch(function (error) {
+                console.error(error);
+            });
+
+    }
+})
 
 
 
