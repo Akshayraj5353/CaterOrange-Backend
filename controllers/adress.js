@@ -3,7 +3,7 @@ const User = require('../models/UserSchema');
 const addAddress = async (req, res) => {
   try {
     const userId = req.params.userId; // Assuming you pass the user ID in the URL
-    const { street, city, state, pincode, landmark } = req.body;
+    const { fullAddress, city, state, pincode, landmark } = req.body;
 
     // Find the user by ID
     const user = await User.findById(userId);
@@ -13,7 +13,7 @@ const addAddress = async (req, res) => {
     }
 
     // Add the new address to the user's addresses array
-    user.addresses.push({ street, city, state, pincode, landmark });
+    user.addresses.push({ fullAddress, city, state, pincode, landmark });
     await user.save();
 
     // Send success response

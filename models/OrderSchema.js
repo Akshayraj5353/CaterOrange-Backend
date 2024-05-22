@@ -21,6 +21,8 @@ const { Schema } = mongoose;
 const OrderSchema = new Schema({
     products: { type: Array, required: true },
     address: { type: Object, required: true },
+    phoneNumber: { type: Number, required: true },
+    email: { type: String, required: true },
     total: { type: Number, required: true }, // Changed to Number to support decimals
     userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }, // Reference to the User collection
     createdAt: { type: Number, default: Math.floor(Date.now() / 1000) },

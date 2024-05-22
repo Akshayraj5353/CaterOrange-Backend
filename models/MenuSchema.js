@@ -10,9 +10,10 @@ const formDataSchema = new mongoose.Schema({
         // moongDalHalwa: Number,
         // todaysSpecialSweet: Number
     },
-    itemName: String,
-    itemPrice: Number,
-    itemDetails: String,
+    deliveryDate: { type: Date, required: true }
+    // itemName: String,
+    // itemPrice: Number,
+    // itemDetails: String,
 });
 
 

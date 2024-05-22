@@ -8,7 +8,7 @@ const addAddress = require('../controllers/adress');
 const userAdress = require('../controllers/useradress');
 // const paymentController = require('../controllers/PaymentController');
 const deleteaddress = require('../controllers/deleteaddress')
-const createOrder = require('../controllers/Createorder');
+const orderController = require('../controllers/orderController'); 
 const { deleteCartDetails } = require('../controllers/deletecartdetails');
 const axios = require('axios');
 const sha256 = require('sha256');
@@ -46,28 +46,28 @@ router.post("/createCartDetails/:id", cartDetails);
 
 
 //
-router.post('/createOrder/:userId', createOrder)
-// router.delete('/deleteUserCart/:userId', deleteCartDetails)
+router.post('/createOrder/:userId', orderController.createOrder)
+// Read all orders
+router.get('/getAllOrders/:userId', orderController.getAllOrders);
 
 
 //payment testing 
 router.post('/pay', (req, res) => {
     const payEndpoint = "/pg/v1/pay"
-    const amount = req.body.amount * 100;
-    const userid = req.body.userId;
+    const { userId, amount , phonenumber } = req.body
     const merchantTransactionId = uniqid()
     const salt_key = process.env.SALT_KEY;
     const salt_Index = process.env.SALT_INDEX;
-
+    amountInPaise = amount * 100;
 
     const payload = {
         "merchantId": `${process.env.MERCHANT_ID}`,
         "merchantTransactionId": merchantTransactionId,
-        "merchantUserId": "USER_123",
-        "amount": 100,
-        "redirectUrl": `http://localhost:3000/`,
+        "merchantUserId": userId,
+        "amount": amountInPaise,
+        "redirectUrl": `https://caterorange.com/cart`,
         "redirectMode": "REDIRECT",
-        "callbackUrl": "http://localhost:5001/api/phonepe/webhook",
+        "callbackUrl": "https://backedend.caterorange.com/api/phonepe/webhook",
         "mobileNumber": "9999999999",
         "paymentInstrument": {
             "type": "PAY_PAGE"
@@ -110,7 +110,7 @@ router.post('/phonepe/webhook', (req, res) => {
     const xVerifyHeader = callbackHeaders['X-VERIFY'];
     const decodedResponse = Buffer.from(base64response, 'base64').toString('utf8');
     console.log(decodedResponse);
-    res.send(decodedResponse);
+    // res.send(decodedResponse);
 })
 
 
