@@ -4,7 +4,7 @@ const { default: mongoose } = require('mongoose');
 
 const createOrder = async (req, res) => {
     const userId = req.params.userId;
-    const { products, address, total , email ,phoneNumber} = req.body;
+    const { products, address, total , email ,phoneNumber , merchantTransactionId} = req.body;
     console.log(userId,"test user id for order creation ");
 
     try {
@@ -22,10 +22,12 @@ const createOrder = async (req, res) => {
             address,
             total,
             userId,
+            merchantTransactionId,
         });
 
         // Save the order to the database
         const savedOrder = await newOrder.save();
+        console.log(savedOrder);
 
         return res.status(201).json(savedOrder);
     } catch (error) {
